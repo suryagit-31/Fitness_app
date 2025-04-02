@@ -1,4 +1,5 @@
 import Exercise from "../models/sheet.model.js";
+import { searchExerciseusingName } from "../services/exercise_search.js";
 
 export const filter_Exercise = async (req, res) => {
   try {
@@ -45,6 +46,22 @@ export const refined_Exercise = async (req, res) => {
     return res.status(200).json(refined_Exercise);
   } catch (error) {
     console.error("Error fetching exercise:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const searchExerciseByName = async (req, res) => {
+  try {
+    const { name } = req.query;
+
+    if (!name|| name.trim() === "") {
+      return res.status(400).json({ error: "Search query is required" });
+    }
+
+    const result = await searchExerciseusingName(name);
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error searching exercise:", error);
     return res.status(500).json({ message: "Server error" });
   }
 };
