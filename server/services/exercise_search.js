@@ -10,7 +10,7 @@ export async function searchExerciseusingName(name) {
           match: { name },
         },
       },
-    });
+    }); // searching excercises by name
 
     console.log("Search Results:", result.hits.hits);
     return result.hits.hits;
