@@ -1,53 +1,73 @@
 import React from "react";
-import { ArrowRight, Dumbbell, Calendar, Target } from "lucide-react";
+
+
+import { Dumbbell, Search as SearchIcon } from "lucide-react";
+import { Search } from "../components/ui/search";
+import { Button } from "../components/ui/button";
+import { CategoryCard } from "../components/categorycard";
+
+
+const categories = [
+  { title: "Strength", icon: <Dumbbell className="h-8 w-8" /> },
+  { title: "Cardio", icon: <Dumbbell className="h-8 w-8" /> },
+  { title: "Flexibility", icon: <Dumbbell className="h-8 w-8" /> },
+  { title: "Recovery", icon: <Dumbbell className="h-8 w-8" /> },
+  { title: "CrossFit", icon: <Dumbbell className="h-8 w-8" /> },
+  { title: "Yoga", icon: <Dumbbell className="h-8 w-8" /> },
+  { title: "Bodyweight", icon: <Dumbbell className="h-8 w-8" /> },
+  { title: "Sports", icon: <Dumbbell className="h-8 w-8" /> },
+];
 
 const HomePage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white">
-      <div className="container mx-auto px-4 py-16">
-        <h1 className="text-4xl font-bold mb-8 text-center">
-          Welcome to Your Fitness Journey
-        </h1>
-
-        <div className="grid md:grid-cols-3 gap-8 mb-12">
-          <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-            <Dumbbell className="w-12 h-12 mb-4 text-blue-400" />
-            <h2 className="text-xl font-semibold mb-3">Custom Workouts</h2>
-            <p className="text-gray-300">
-              Generate personalized workout plans tailored to your goals and
-              fitness level.
-            </p>
+    <div className="min-h-screen bg-gray-50">
+      <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
+        <div className="container mx-auto flex h-16 items-center gap-4 px-4">
+          <h1 className="text-xl font-bold">FitFlow</h1>
+          <div className="flex-1 px-4">
+            <Search placeholder="Search exercises..." />
           </div>
-
-          <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-            <Calendar className="w-12 h-12 mb-4 text-green-400" />
-            <h2 className="text-xl font-semibold mb-3">Track Progress</h2>
-            <p className="text-gray-300">
-              Monitor your fitness journey with detailed progress tracking and
-              analytics.
-            </p>
-          </div>
-
-          <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-            <Target className="w-12 h-12 mb-4 text-red-400" />
-            <h2 className="text-xl font-semibold mb-3">Set Goals</h2>
-            <p className="text-gray-300">
-              Define and achieve your fitness goals with our guided goal-setting
-              system.
-            </p>
-          </div>
+          <Button>Generate Workout</Button>
         </div>
+      </header>
 
-        <div className="text-center">
-          <button
-            onClick={() => (window.location.href = "/generator")}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-8 rounded-full inline-flex items-center transition-all duration-300"
-          >
-            Create Workout
-            <ArrowRight className="ml-2 w-5 h-5" />
-          </button>
-        </div>
-      </div>
+      <main className="container mx-auto px-4 py-8">
+        <section className="mb-12">
+          <div className="relative h-[400px] overflow-hidden rounded-3xl">
+            <img
+              src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=2000&q=80"
+              alt="Hero"
+              className="absolute inset-0 h-full w-full object-cover brightness-50"
+            />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-center text-white">
+                <h2 className="mb-4 text-4xl font-bold">
+                  Transform Your Fitness Journey
+                </h2>
+                <p className="mb-8 text-lg">
+                  Discover personalized workouts tailored to your goals
+                </p>
+                <Button className="bg-white text-black hover:bg-gray-100">
+                  Start Now
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2 className="mb-8 text-2xl font-bold">Browse Categories</h2>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {categories.map((category) => (
+              <CategoryCard
+                key={category.title}
+                title={category.title}
+                icon={category.icon}
+              />
+            ))}
+          </div>
+        </section>
+      </main>
     </div>
   );
 };
