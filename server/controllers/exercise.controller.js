@@ -4,13 +4,17 @@ import { searchExerciseusingName } from "../services/exercise_search.js";
 export const filter_Exercise = async (req, res) => {
   try {
     const { level, primaryMuscles, category } = req.body;
+    console.log(req.body);
     let filter = {};
 
     if (level) filter.level = level;
-    if (primaryMuscles) filter.primaryMuscles = primaryMuscles;
+    if (primaryMuscles) {
+      filter.primaryMuscles = { $in: primaryMuscles };
+    }
     if (category) filter.category = category;
 
     const filteredExercises = await Exercise.find(filter);
+    console.log(filteredExercises);
     return res.status(200).json(filteredExercises);
   } catch (error) {
     console.error("Error fetching filtered exercises:", error);
@@ -54,7 +58,7 @@ export const searchExerciseByName = async (req, res) => {
   try {
     const { name } = req.query;
 
-    if (!name|| name.trim() === "") {
+    if (!name || name.trim() === "") {
       return res.status(400).json({ error: "Search query is required" });
     }
 

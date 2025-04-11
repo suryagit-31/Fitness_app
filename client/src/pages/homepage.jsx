@@ -1,11 +1,11 @@
-import React from "react";
-
+import React, { useState } from "react";
 
 import { Dumbbell, Search as SearchIcon } from "lucide-react";
 import { Search } from "../components/ui/search";
 import { Button } from "../components/ui/button";
 import { CategoryCard } from "../components/categorycard";
 
+import useExercisesStore from "../store/useExercisestore";
 
 const categories = [
   { title: "Strength", icon: <Dumbbell className="h-8 w-8" /> },
@@ -19,6 +19,30 @@ const categories = [
 ];
 
 const HomePage = () => {
+  const { workoutgenerator, isgeneratingworkout } = useExercisesStore();
+
+  const [workout, Setworkout] = useState({
+    level: "",
+    primaryMuscles: "",
+    category: "",
+  });
+
+  const handlesubmit = async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      ...workout,
+      primaryMuscles: [workout.primaryMuscles], // 👈 wrap string into array
+    };
+
+    try {
+      const response = await workoutgenerator(payload);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
@@ -47,9 +71,47 @@ const HomePage = () => {
                 <p className="mb-8 text-lg">
                   Discover personalized workouts tailored to your goals
                 </p>
-                <Button className="bg-white text-black hover:bg-gray-100">
-                  Start Now
-                </Button>
+                <form onSubmit={handlesubmit}>
+                  <div className="flex justify-center gap-4 p-1 mb-8 ">
+                    <input
+                      type="search"
+                      placeholder="level"
+                      value={workout.level}
+                      onChange={(e) =>
+                        Setworkout({ ...workout, level: e.target.value })
+                      }
+                      className="w-full border-2 bg-transparent px-4 py-2 text-white placeholder:text-white focus:outline-none"
+                    />
+                    <input
+                      type="search"
+                      placeholder="primary muscle"
+                      value={workout.primaryMuscles}
+                      onChange={(e) =>
+                        Setworkout({
+                          ...workout,
+                          primaryMuscles: e.target.value,
+                        })
+                      }
+                      className="w-full border-2 bg-transparent px-4 py-2 text-white placeholder:text-white focus:outline-none"
+                    />
+                    <input
+                      type="search"
+                      placeholder="category"
+                      value={workout.category}
+                      onChange={(e) =>
+                        Setworkout({ ...workout, category: e.target.value })
+                      }
+                      className="w-full border-2 bg-transparent px-4 py-2 text-white placeholder:text-white focus:outline-none"
+                    />
+                  </div>
+                  <Button
+                    type="submit"
+                    className="bg-white text-black hover:bg-gray-100"
+                    disabled={isgeneratingworkout}
+                  >
+                    {isgeneratingworkout ? "Generating..." : "Start Now"}
+                  </Button>
+                </form>
               </div>
             </div>
           </div>
