@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+//import motion from "framer-motion";
 
 import { Dumbbell, Search as SearchIcon } from "lucide-react";
 import { Search } from "../components/ui/search";
@@ -20,7 +22,7 @@ const categories = [
 
 const HomePage = () => {
   const { workoutgenerator, isgeneratingworkout } = useExercisesStore();
-
+  const navigate = useNavigate();
   const [workout, Setworkout] = useState({
     level: "",
     primaryMuscles: "",
@@ -34,13 +36,20 @@ const HomePage = () => {
       ...workout,
       primaryMuscles: [workout.primaryMuscles], // 👈 wrap string into array
     };
-
     try {
       const response = await workoutgenerator(payload);
       console.log(response);
+      navigate("/exercises");
     } catch (error) {
       console.log(error);
+      alert("Failed to generate workout. Try again!");
     }
+
+    Setworkout = {
+      level: "",
+      primaryMuscles: "",
+      category: "",
+    };
   };
 
   return (
@@ -107,6 +116,7 @@ const HomePage = () => {
                   <Button
                     type="submit"
                     className="bg-white text-black hover:bg-gray-100"
+                    variant="outline"
                     disabled={isgeneratingworkout}
                   >
                     {isgeneratingworkout ? "Generating..." : "Start Now"}
